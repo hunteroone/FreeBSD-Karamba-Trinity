@@ -1,0 +1,110 @@
+################################################################################
+# FreeBSD Karamba Trinity
+################################################################################
+
+# Russian FreeBSD edition by Bachilo Dmitry <root[at]solink.ru>
+# Modified by Hunter E. <hunter2k1@disroot.org>
+
+################################################################################
+
+karamba x=750 y=0 w=250 h=635 locked=true interval=1000
+
+################################################################################
+
+################################################################################
+# System Info
+################################################################################
+<group> x=10 y=10
+image x=5 y=25 path="img/icons/sysinfo.png"
+text x=75 y=10 value="System Info" color=255,255,255 fontsize=14 font="Sans Serif"
+#clickarea x=0 y=0 w=64 h=64 onclick=""
+
+text x=75 y=30 sensor=program program="echo ${USER}@`hostname`" line=1 color=255,255,255 fontsize=10 font="DejaVu Sans"
+text x=75 y=45 value="OS:" color=255,255,255 fontsize=10 font="DejaVu Sans"
+text x=100 y=45 sensor=program program="uname"  color=255,255,255 fontsize=10 font="DejaVu Sans"
+text x=75 y=60 value="Version:" color=255,255,255 fontsize=10 font="DejaVu Sans"
+text x=120 y=60 sensor=program program="uname -r" line=1 color=255,255,255 fontsize=10 font="DejaVu Sans"
+text x=75 y=75 sensor=program program="tde-config --version | grep TDE" line=1 color=255,255,255 fontsize=10 font="DejaVu Sans"
+text  x=75 y=90 sensor=uptime format="Uptime:   %hh:%mm:%ss" interval=1000  line=1 color=255,255,255 fontsize=10 font="DejaVu Sans"
+</group>
+################################################################################
+image x=25 y=115 path="img/line.png"
+################################################################################
+
+################################################################################
+# CPU
+################################################################################
+<group> x=10 y=125
+image x=160 y=0 path="img/icons/cpu.png"
+text x=15 y=3 value="Processor" color=255,255,255 fontsize=14 font="Sans Serif"
+text x=90 y=68 sensor=CPU format="%v%" color=255,255,255 align=right fontsize=10 font="DejaVu Sans"
+text x=10 y=68 value="Usage:" color=255,255,255 align=left fontsize=10 font="DejaVu Sans"
+text x=10 y=52 sensor=program program="sysctl -a | grep hw.model | cut -d : -f2 | cut -b 2-" color=255,255,255 fontsize=10 font="DejaVu Sans"
+text x=120 y=68 value="Temp:" color=255,255,255 fontsize=10 font="DejaVu Sans"
+text x=170 y=68 sensor=program program="sysctl -a | grep dev.cpu.0.temperature | cut -d : -f2"  color=255,255,255 fontsize=10 font="DejaVu Sans"
+image x=10 y=25 path="img/cpugrid.png"
+graph x=10 y=24 w=140 h=24 color=255,0,0 sensor=cpu interval=1000
+</group>
+################################################################################
+image x=25 y=205 path="img/line.png"
+################################################################################
+
+################################################################################
+# Memory
+################################################################################
+<group> x=10 y=205
+image x=0 y=0 path="img/icons/memory.png"
+text x=65 y=10 value="Memory" color=255,255,255 fontsize=12 font="Sans Serif"
+text x=65 y=30 value="Total:" interval=1000 color=255,255,255 fontsize=10 font="Sans Serif"
+text x=115 y=30 sensor=program program="echo `expr $(sysctl -n hw.physmem) / 1024 / 1024 / 1024`GB" interval=1000 color=255,255,255 fontsize=10 font="Sans Serif"
+text x=65 y=50 value="Usable:" interval=1000 color=255,255,255 fontsize=10 font="Sans Serif"
+text x=115 y=50 sensor=program program="echo `expr $(sysctl -n hw.usermem) / 1024 / 1024 / 1024`GB" interval=1000 color=255,255,255 fontsize=10 font="Sans Serif"
+</group>
+################################################################################
+image x=25 y=270 path="img/line.png"
+################################################################################
+
+################################################################################
+# Network
+################################################################################
+<group> x=10 y=275
+image x=160 y=-10 PATH="img/icons/network.png"
+text x=15 y=5 value="Network" color=255,255,255 fontsize=12 font="Sans Serif"
+
+text  x=10 y=27 value="IP:" color=255,255,255 fontsize=10 font="Sans Serif"
+text x=25 y=27 sensor=program program="ifconfig re0 | grep 'inet ' | cut -d t -f2 | cut -d n -f1 | cut -b 2-" color=255,255,255 fontsize=10 font="Sans Serif"
+
+################################################################################
+# Sensor network download
+# range is up to 500 kb. change 'max' value if needed.
+image x=10 y=45 path="img/netgrid-down.png"
+graph x=10 y=44 w=200 h=28 color=255,0,0 sensor=network DEVICE="re0" format="%in" interval=1000 max=20
+text  x=40 y=75 sensor=network DEVICE="re0" color=255,255,255 format="%in Kb"  fontsize=10 font="Sans Serif" decimals=1
+text  x=100 y=75 value="(Download)" color=255,255,255 fontsize=10 font="Sans Serif" DECIMALS=1
+
+################################################################################
+# Sensor network upload
+# range is up to 50 kb. change 'max' value if needed.
+image x=10 y=90 path="img/netgrid-up.png"
+graph x=10 y=89 w=200 h=28 color=255,0,0 sensor=network DEVICE="re0" format="%out" interval=1000 max=10
+text  x=40 y=120 sensor=network DEVICE="re0" color=255,255,255 format="%out Kb" fontsize=10 font="Sans Serif" DECIMALS=1
+text  x=100 y=120 value="(Upload)" color=255,255,255 fontsize=10 font="Sans Serif" DECIMALS=1
+</group>
+################################################################################
+image x=25 y=430 path="img/line.png"
+################################################################################
+
+################################################################################
+# Disks
+################################################################################
+<group> x=10 y=440
+image x=0 y=-5 path="img/icons/disks.png"
+text x=60 y=0 value="Disks" color=255,255,255 fontsize=12 font="Sans Serif"
+text x=60 y=20 value="/" color=255,255,255 fontsize=10 font="Sans Serif"
+text x=100 y=20 sensor=program program="df -aHT / | awk '{print $5, $4}'" color=255,255,255 fontsize=10 font="DejaVu Sans"
+
+# Optional, uncomment to show hard drive mounted at /hdd (you can change or add depending on your use case)
+#text x=60 y=60 value="/hdd" color=255,255,255 fontsize=10 font="Sans Serif"
+#text x=100 y=60 sensor=program program="df -aHT /hdd | awk '{print $5, $4}'" color=255,255,255 fontsize=10 font="DejaVu Sans"
+
+</group>
